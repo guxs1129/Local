@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="30">
+
+	<Appenders>
+		<!-- 定义控制台输出 -->
+		<Console name="Console" target="SYSTEM_OUT" follow="true">
+			<PatternLayout
+				pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %m%n" />
+		</Console>
+
+		<!-- 定义后台文档日志记录 -->
+		<RollingFile name="RollingFile" fileName="e:/logs/log4j2.log"
+			filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+			<PatternLayout>
+				<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %p %l - %m%n
+				</Pattern>
+			</PatternLayout>
+			<Policies>
+				<!-- 定义log文件封存的周期 -->
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
+				<SizeBasedTriggeringPolicy size="100 KB" />
+			</Policies>
+			<DefaultRolloverStrategy fileIndex="max" max="2" />
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<!-- 定义单个类日志记录级别 -->
+		<Logger name="com.stee.erp.controller" level="error">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="RollingFile" />
+		</Logger>
+		<!-- 定义除单个类外所有日志记录级别 -->
+		<Root level="trace">
+			<AppenderRef ref="Console" />
+		</Root>
+	</Loggers>
+
+</Configuration>
+
+<!-- <?xml version="1.0" encoding="UTF-8"?> <Configuration> <Appenders> <File 
+	name="file" fileName="mylog.log" append="false" bufferedIO="false"> <PatternLayout 
+	pattern="%t %-5p %c{2} - %m%n" /> </File> <Console name="STDOUT" target="SYSTEM_OUT"> 
+	<PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n" /> </Console> 
+	</Appenders> <Loggers> <Logger name="org.apache.log4j.xml" level="debug"> 
+	<AppenderRef ref="file" /> </Logger> <Root level="debug"> <AppenderRef ref="STDOUT" 
+	/> </Root> </Loggers> </Configuration> -->
